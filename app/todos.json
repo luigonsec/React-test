@@ -1,0 +1,21 @@
+
+{
+  "todos": [
+    {
+      "task": "Tarea numero 1",
+      "isCompleted": false
+    },
+    {
+      "task": "Tarea numero 2",
+      "isCompleted": false
+    },
+    {
+      "task": "Tarea numero 3",
+      "isCompleted": false
+    },
+    {
+      "task": "Tarea numero 4",
+      "isCompleted": false
+    }
+  ]
+}
