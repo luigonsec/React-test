@@ -1,82 +1,44 @@
 import React from 'react'
-import {todos} from '../todos.json'
-import TodoList from './Todo/TodoList'
-import TodoForm from './Todo/TodoForm'
+import {questions} from '../questions.json'
+import QuestionList from './Questions/QuestionList'
+import QuestionForm from './Questions/QuestionForm'
 import _ from 'lodash'
 
 class App extends React.Component {
   constructor () {
     super()
     this.state = {
-      todos: todos
+      questions : questions
     }
   }
 
   render () {
     return (
       <div>
-        <h1>React Todo</h1>
-        <TodoForm
-          todos={this.state.todos}
-          createTask={this.createTask.bind(this)}
+        <h1>Cuestionarios</h1>
+        <QuestionForm
+          questions = {this.state.questions}
+          createQuestion={this.createQuestion.bind(this)}
         />
-        <TodoList
-          todos={this.state.todos}
-          toggleTask={this.toggleTask.bind(this)}
-          setTaskComplete={this.setTaskComplete.bind(this)}
-          saveTask={this.saveTask.bind(this)}
-          deleteTask={this.deleteTask.bind(this)}
+        <QuestionList
+          questions={this.state.questions}
         />
       </div>
     )
   }
 
-  createTask (task) {
-    this.state.todos.push({
-      task,
-      isCompleted: false
-    })
-    this.setState({
-      todos: this.state.todos
-    })
-  }
 
-  setTaskComplete (task, bool) {
-    const foundTodo = _.find(
-      this.state.todos,
-      (todo, index) => todo.task === task
+  createQuestion (q,a) {
+    this.state.questions.push(
+      {
+        text: q,
+        answers: a
+      }
     )
-    foundTodo.isCompleted = bool
-    this.setState({
-      todos: this.state.todos
-    })
+    this.setState({questions : this.state.questions})
+    console.log(q);
   }
 
-  toggleTask (task) {
-    const foundTodo = _.find(
-      this.state.todos,
-      (todo, index) => todo.task === task
-    )
-    foundTodo.isCompleted = !foundTodo.isCompleted
-    this.setState({
-      todos: this.state.todos
-    })
-  }
-
-  saveTask (oldTask, newTask) {
-    const foundTodo = _.find(
-      this.state.todos,
-      (todo, index) => todo.task === oldTask
-    )
-    foundTodo.task = newTask
-    this.setState({
-      todos: this.state.todos
-    })
-  }
-
-  deleteTask (task) {
-
-  }
 }
 
 module.exports = App
