@@ -1,77 +1,114 @@
 import React from 'react'
-import _ from 'lodash'
+import FontAwesome from 'react-fontawesome'
+import {Input, Button, FormGroup, Label} from 'reactstrap'
+// import _ from 'lodash'
 
 class AnswerItem extends React.Component {
-
-  constructor(){
-    super();
+  constructor (props) {
+    super()
     this.state = {
-      added : false
+      added: false,
+      answer: props.answer
     }
   }
 
-  handleCreate(a,e,i){
-    this.setState({added : true});
-    const answer = {
-      text: this.textQuestion.value,
-      isCorrect: this.isCorrectQuestion.value == 'on'
-    }
-    this.prop.addAnswer(answer)
+  handleDelete () {
+    this.setState({added: false})
+    const answerStored = this.state.answer
+    answerStored.text = null
+    answerStored.isCorrect = false
+    this.setState({answer: answerStored})
   }
 
+  handleCreate () {
+    this.setState({added: true})
+    const answerStored = this.state.answer
+    answerStored.text = this.textQuestion.value
+    answerStored.isCorrect = this.isCorrectQuestion.value === 'on'
+    this.setState({answer: answerStored})
+  }
 
-  renderAnswers(){
-    const style = {'background-color' : 'grey'}
-    if(this.state.added) style['background-color'] = 'green'
-
+  renderAnswers () {
+    const InputName = this.renderInput()
+    const Checkbox = this.renderCheckbox()
+    const AddButton = this.renderAddButton()
+    const DeleteButton = this.renderDeleteButton()
     return (
-      <div style={style}>
-        {this.renderInput()}
-        {this.renderCheckbox()}
-        {this.renderAddButton()}
+      <div>
+        {InputName}
+        {Checkbox}
+        <FormGroup row>
+          {AddButton}
+          {DeleteButton}
+        </FormGroup>
       </div>
     )
   }
 
-  renderCheckbox(){
-    if(!this.state.added){
+  renderCheckbox () {
+    const disabled = !this.props.added ? 'disabled' : '';
+    return (
+      <FormGroup row>
+        <FormGroup check inline>
+          <Label check>
+            <input ref={(input) => { this.isCorrectQuestion = input }} type='radio' name='radio1' disabled={this.props.added} />
+            Si
+          </Label>
+        </FormGroup>
+        <FormGroup check inline>
+          <Label check>
+            <input ref={(input) => { this.isCorrectQuestion = input }} type='radio' name='radio1' disabled={this.props.added} />
+            No
+          </Label>
+        </FormGroup>
+      </FormGroup>
+    )
+  }
+
+  renderInput () {
+    if (!this.state.added) {
       return (
-        <input ref={(input) => { this.isCorrectQuestion = input }} type='checkbox' />
+        <FormGroup row>
+          <Label>
+            Escriba la posible respuesta
+          </Label>
+          <input ref={(input) => { this.textQuestion = input }} type='text' placeholder='Introduzca una posible respuesta' />
+        </FormGroup>
       )
-    }else{
+    } else {
       return (
-        <input ref={(input) => { this.isCorrectQuestion = input }} type='checkbox' disabled/>
+        <FormGroup row>
+          <Label>
+            Escriba la posible respuesta
+          </Label>
+          <input ref={(input) => { this.textQuestion = input }} type='text' placeholder='Introduzca una posible respuesta' disabled='true' />
+        </FormGroup>
       )
     }
   }
 
-  renderInput(){
-    if(!this.state.added){
+  renderDeleteButton () {
+    if (!this.state.added) {
       return (
-        <input ref={(input) => { this.textQuestion = input }} type='text' placeholder='Introduzca una posible respuesta' />
-      )
-    }else{
-      return (
-        <input ref={(input) => { this.textQuestion = input }} type='text' placeholder='Introduzca una posible respuesta' disabled='true'/>
+        <Button size='sm' type='button' onClick={this.handleDelete.bind(this)}>
+          <FontAwesome name='trash' />
+        </Button>
       )
     }
   }
 
-  renderAddButton(){
-    if(!this.state.added){
-      return(
-        <button type='button' onClick={this.handleCreate.bind(this)}>OK</button>
+  renderAddButton (a) {
+    if (!this.state.added) {
+      return (
+        <Button size='sm' type='button' onClick={this.handleCreate.bind(this)}>
+          <FontAwesome name='plus' />
+        </Button>
       )
     }
-
   }
 
   render () {
-    return (
-      <div>
-          {this.renderAnswers()}
-      </div>
-    )
+    return this.renderAnswers()
   }
 }
 

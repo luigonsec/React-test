@@ -1,33 +1,44 @@
 import React from 'react'
-import _ from 'lodash'
+// import _ from 'lodash'
 import AnswersList from './AnswersList'
+import { Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import FontAwesome from 'react-fontawesome'
 
 class QuestionForm extends React.Component {
   constructor () {
     super()
     this.state = {
+      text: '',
       answers: [],
       error: null
     }
   }
 
+  handleChange (event) {
+    const target = event.target
+    const value = target.value
+    const name = target.name
+    const state = {}
+    state[name] = value
+    this.setState(state)
+  }
 
-  handleCreate(e){
-    e.preventDefault();
-    let t = this.inputQuestion.value;
-    this.props.createQuestion(t, this.state.answers)
-    this.inputQuestion.value = '';
+  handleCreate (e) {
+    e.preventDefault()
+    let text = this.state.text
+    this.props.createQuestion(text, this.state.answers)
     this.setState(
       {
-          answers: this.state.answers
+        text: '',
+        answers: this.state.answers
       }
     )
   }
 
-  addAnswerInput(){
+  addAnswerInput () {
     this.state.answers.push(
       {
-        text : null,
+        text: '',
         isCorrect: false
       }
     )
@@ -35,25 +46,36 @@ class QuestionForm extends React.Component {
       {
         answers: this.state.answers
       }
-    );
+    )
   }
 
   render () {
     return (
-      <form onSubmit={this.handleCreate.bind(this)}>
-        <input ref={(input) => { this.inputQuestion = input }} type='text' placeholder='Introduzca una pregunta' />
-        <button onClick={this.addAnswerInput.bind(this)} type='button'>Añadir respuesta</button>
+      <Form onSubmit={this.handleCreate.bind(this)}>
+        <FormGroup row>
+          <Label>
+            Introduzca una nueva pregunta
+          </Label>
+          <input name='text' value={this.state.text} onChange={this.handleChange.bind(this)} type='text' placeholder='Introduzca una pregunta' />
+        </FormGroup>
+        <FormGroup row>
+            Añadir posible respuesta
+          <Button size='sm' onClick={this.addAnswerInput.bind(this)} type='button'>
+            <FontAwesome name='plus' />
+          </Button>
+        </FormGroup>
         <AnswersList
           {... this.props}
           answers={this.state.answers}
         />
-        <button type='submit'>Enviar</button>
-      </form>
+        <FormGroup row>
+          <Button size='sm' type='submit'>
+            <FontAwesome name='save' />
+          </Button>
+        </FormGroup>
+      </Form>
     )
   }
-
-
-
 }
 
 module.exports = QuestionForm

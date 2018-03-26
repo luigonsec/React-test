@@ -1,27 +1,25 @@
 import React from 'react'
 import _ from 'lodash'
+import {Container, Row, Col} from 'reactstrap'
 
 class QuestionList extends React.Component {
-
-  renderAnswers(answers){
-    return _.map(answers, (answer, index) =>
-      {
-        return (
-          <div key={index}>
-            {answer.text}
-          </div>
-        )
-      }
-    )
+  renderAnswers (answers) {
+    return _.map(answers, (answer, index) => {
+      return (
+        <Col key={index}>
+          {answer.text}
+        </Col>
+      )
+    })
   }
 
-  renderQuestions(){
-    return _.map(this.props.questions, (question) => {
+  renderQuestions () {
+    return _.map(this.props.questions, (question, index) => {
       return (
-        <div>
+        <Col key={index}>
           {question.text}
           {this.renderAnswers(question.answers)}
-        </div>
+        </Col>
       )
     })
   }
