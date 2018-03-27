@@ -12,6 +12,15 @@ class AnswerItem extends React.Component {
     }
   }
 
+  handleChange (event) {
+    const target = event.target
+    const value = target.value
+    const name = target.name
+    const state = {}
+    this.state.answer[name]= value
+    this.setState({answer: this.state.answer})
+  }
+
   handleDelete () {
     this.setState({added: false})
     const answerStored = this.state.answer
@@ -22,10 +31,6 @@ class AnswerItem extends React.Component {
 
   handleCreate () {
     this.setState({added: true})
-    const answerStored = this.state.answer
-    answerStored.text = this.textQuestion.value
-    answerStored.isCorrect = this.isCorrectQuestion.value === 'on'
-    this.setState({answer: answerStored})
   }
 
   renderAnswers () {
@@ -51,13 +56,13 @@ class AnswerItem extends React.Component {
       <FormGroup row>
         <FormGroup check inline>
           <Label check>
-            <input ref={(input) => { this.isCorrectQuestion = input }} type='radio' name='radio1' disabled={this.props.added} />
+            <Input  type='radio' name='isCorrect' onChange={this.handleChange.bind(this)}  disabled={this.props.added} />
             Si
           </Label>
         </FormGroup>
         <FormGroup check inline>
           <Label check>
-            <input ref={(input) => { this.isCorrectQuestion = input }} type='radio' name='radio1' disabled={this.props.added} />
+            <Input type='radio' name='isCorrect' onChange={this.handleChange.bind(this)}  disabled={this.props.added} />
             No
           </Label>
         </FormGroup>
@@ -72,7 +77,7 @@ class AnswerItem extends React.Component {
           <Label>
             Escriba la posible respuesta
           </Label>
-          <input ref={(input) => { this.textQuestion = input }} type='text' placeholder='Introduzca una posible respuesta' />
+          <Input name='text' onChange={this.handleChange.bind(this)} type='text' placeholder='Introduzca una posible respuesta' />
         </FormGroup>
       )
     } else {
@@ -81,7 +86,7 @@ class AnswerItem extends React.Component {
           <Label>
             Escriba la posible respuesta
           </Label>
-          <input ref={(input) => { this.textQuestion = input }} type='text' placeholder='Introduzca una posible respuesta' disabled='true' />
+          <Input name='text' onChange={this.handleChange.bind(this)} type='text' placeholder='Introduzca una posible respuesta' disabled='true' />
         </FormGroup>
       )
     }

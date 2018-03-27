@@ -30,7 +30,7 @@ class QuestionForm extends React.Component {
     this.setState(
       {
         text: '',
-        answers: this.state.answers
+        answers: []
       }
     )
   }
@@ -56,7 +56,7 @@ class QuestionForm extends React.Component {
           <Label>
             Introduzca una nueva pregunta
           </Label>
-          <input name='text' value={this.state.text} onChange={this.handleChange.bind(this)} type='text' placeholder='Introduzca una pregunta' />
+          <Input name='text' value={this.state.text} onChange={this.handleChange.bind(this)} type='text' placeholder='Introduzca una pregunta' />
         </FormGroup>
         <FormGroup row>
             Añadir posible respuesta
