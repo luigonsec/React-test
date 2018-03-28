@@ -1,6 +1,7 @@
 import React from 'react'
 import FontAwesome from 'react-fontawesome'
 import {Input, Button, FormGroup, Label, Row, Col} from 'reactstrap'
+import AlertError from './../Basic/AlertError'
 // import _ from 'lodash'
 
 class AnswerForm extends React.Component {
@@ -27,7 +28,7 @@ class AnswerForm extends React.Component {
     this.setState(state)
   }
 
-  renderAnswers () {
+  renderAnswer () {
     const InputName = this.renderInput()
     const Checkbox = this.renderRadioIsCorrect()
     const DeleteButton = this.renderDeleteButton()
@@ -36,6 +37,9 @@ class AnswerForm extends React.Component {
         <Row>
           <Col sm={12}>
             <b>Escriba la posible respuesta</b>
+            <AlertError
+              error={this.state.answer.error}
+            />
           </Col>
         </Row>
         <Row>
@@ -93,7 +97,7 @@ class AnswerForm extends React.Component {
   }
 
   render () {
-    return this.renderAnswers()
+    return this.renderAnswer()
   }
 }
 

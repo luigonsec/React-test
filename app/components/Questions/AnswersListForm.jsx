@@ -1,7 +1,7 @@
 import React from 'react'
 import AnswerForm from './AnswerForm'
 import _ from 'lodash'
-import {FormGroup, Button, Label} from 'reactstrap'
+import {FormGroup, Button} from 'reactstrap'
 import FontAwesome from 'react-fontawesome'
 
 class AnswersListForm extends React.Component {
@@ -25,7 +25,8 @@ class AnswersListForm extends React.Component {
     const answer = {
       id: this.state.answersCreated,
       text: '',
-      isCorrect: false
+      isCorrect: null,
+      error: null
     }
     this.state.answers.push(answer)
     this.setState(

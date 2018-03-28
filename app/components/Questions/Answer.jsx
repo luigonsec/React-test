@@ -1,6 +1,5 @@
 import React from 'react'
-import _ from 'lodash'
-import {Container, Row, Col, Button, Card, CardHeader, ListGroup, ListGroupItem} from 'reactstrap'
+import {Row, Col, Button, CardHeader} from 'reactstrap'
 import FontAwesome from 'react-fontawesome'
 
 class Answer extends React.Component {
