@@ -25,28 +25,26 @@ class QuestionForm extends React.Component {
     this.setState(state)
   }
 
-  handleQuestionCreate (e) {
-    e.preventDefault()
-
-    let errors = false
-    // Verificamos que la pregunta tenga un texto
-    let text = this.state.text
-    if (!text) {
+  checkQuestionName () {
+    let allOk = true
+    if (!this.state.text) {
       this.state.error = 'Debe introducir un nombre'
       this.setState(
         {
           error: this.state.error
         }
       )
-      errors = true
+      allOk = false
     }
+    return allOk
+  }
 
-    // Verificando que todas las respuestas posibles
-    // tengan un texto
+  checkAnswersText () {
+    let allOk = true
     this.state.answers.forEach(function (answer) {
       if (!answer.text || answer.isCorrect == null) {
         answer.error = 'Hay errores en la posible respuesta'
-        errors = true
+        allOk = false
       } else {
         answer.error = null
       }
@@ -56,24 +54,37 @@ class QuestionForm extends React.Component {
         answers: this.state.answers
       }
     )
+    return allOk
+  }
 
-    // Verificamos que al menos haya dos respuestas
+  checkNumAnswers () {
+    let allOk = true
+    let errorText = null
     if (this.state.answers.length < 2) {
-      errors = true
-      this.setState(
-        {
-          error: 'Debe haber al menos dos respuestas'
-        }
-      )
+      allOk = false
+      errorText = 'Debe haber al menos dos respuestas'
     }
+    this.setState(
+      {
+        error: errorText
+      }
+    )
+    return allOk
+  }
 
-    // Si hay algun error interrumpimos
-    // el proceso de guardado
-    if (errors) {
+  handleQuestionCreate (e) {
+    e.preventDefault()
+
+    // comprobamos que todo este bien y si no
+    // interrumpimos la ejecucion
+    const allOk = this.checkQuestionName() &&
+    this.checkNumAnswers() &&
+    this.checkAnswersText()
+    if (!allOk) {
       return
     }
 
-    this.props.createQuestion(this.state.questionsCreated + 1, text, this.state.answers)
+    this.props.createQuestion(this.state.questionsCreated + 1, this.state.text, this.state.answers)
     this.setState(
       {
         error: null,
