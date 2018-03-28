@@ -1,20 +1,21 @@
 import React from 'react'
 // import _ from 'lodash'
-import AnswersList from './AnswersList'
+import AnswersListForm from './AnswersListForm'
 import { Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import FontAwesome from 'react-fontawesome'
 
 class QuestionForm extends React.Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
     this.state = {
+      questionsCreated: this.props.questions.length,
       text: '',
-      answers: [],
-      error: null
+      error: null,
+      answers: []
     }
   }
 
-  handleChange (event) {
+  handleNameChange (event) {
     const target = event.target
     const value = target.value
     const name = target.name
@@ -23,56 +24,44 @@ class QuestionForm extends React.Component {
     this.setState(state)
   }
 
-  handleCreate (e) {
+  handleQuestionCreate (e) {
     e.preventDefault()
     let text = this.state.text
-    this.props.createQuestion(text, this.state.answers)
+    this.props.createQuestion(this.state.questionsCreated + 1, text, this.state.answers)
     this.setState(
       {
+        questionsCreated: this.state.questionsCreated + 1,
         text: '',
-        answers: this.state.answers
-      }
-    )
-  }
-
-  addAnswerInput () {
-    this.state.answers.push(
-      {
-        text: '',
-        isCorrect: false
-      }
-    )
-    this.setState(
-      {
-        answers: this.state.answers
+        answers: []
       }
     )
   }
 
   render () {
     return (
-      <Form onSubmit={this.handleCreate.bind(this)}>
+      <Form onSubmit={this.handleQuestionCreate.bind(this)}>
         <FormGroup row>
-          <Label>
-            Introduzca una nueva pregunta
-          </Label>
-          <input name='text' value={this.state.text} onChange={this.handleChange.bind(this)} type='text' placeholder='Introduzca una pregunta' />
+          <Col sm={9}>
+            <Label>
+              <b>Introduzca una nueva pregunta</b>
+            </Label>
+          </Col>
+          <Col sm={3}>
+            <Button size='sm' type='submit'>
+              Guardar pregunta  <FontAwesome name='save' />
+            </Button>
+          </Col>
         </FormGroup>
         <FormGroup row>
-            Añadir posible respuesta
-          <Button size='sm' onClick={this.addAnswerInput.bind(this)} type='button'>
-            <FontAwesome name='plus' />
-          </Button>
+          <Col sm={12}>
+            <Input name='text' value={this.state.text} onChange={this.handleNameChange.bind(this)} type='text' placeholder='Introduzca una pregunta' />
+          </Col>
         </FormGroup>
-        <AnswersList
+
+        <AnswersListForm
           {... this.props}
           answers={this.state.answers}
         />
-        <FormGroup row>
-          <Button size='sm' type='submit'>
-            <FontAwesome name='save' />
-          </Button>
-        </FormGroup>
       </Form>
     )
   }
